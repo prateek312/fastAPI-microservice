@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+
+  postgres:
+    container_name: postgresql_db
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    networks:
+      - hellofreshnetwork
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+  product_service:
+    container_name: product_service
+    image: rodolpheche/wiremock:2.23.2-alpine
+    command: --verbose
+    volumes:
+      - ./wiremock/product-service/stubs:/home/wiremock
+    ports:
+      - "8081:8080"
+    networks:
+      - hellofreshnetwork
+
+  user_service:
+    container_name: user_service
+    image: rodolpheche/wiremock:2.23.2-alpine
+    command: --verbose
+    volumes:
+      - ./wiremock/user-service/stubs:/home/wiremock
+    ports:
+      - "8082:8080"
+    networks:
+      - hellofreshnetwork
+
+  rabbitmq:
+    image: rabbitmq:3.7.15-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=hellofresh
+      - RABBITMQ_DEFAULT_PASS=food
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - hellofreshnetwork
+
+  order_service:
+    image: order_service
+    build:
+      dockerfile: Dockerfile
+    depends_on:
+      - user_service
+      - product_service
+      - postgres
+      - rabbitmq
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - DATABASE_URI=postgresql://prateekpandey:hellofresh123@postgres/hellofresh
+      - PRODUCT_SERVICE_URL=http://product_service:8081
+      - USER_SERVICE_URL=http://user_service:8082
+    networks:
+      - hellofreshnetwork
+
+volumes:
+  postgres-db:
+
+networks:
+  hellofreshnetwork:

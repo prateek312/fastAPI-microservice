@@ -1,7 +1,3 @@
-# Python Backend Test
-
-This is a Python backend test for HelloFresh candidates to evaluate their programming skill.
-
 ## Goal
 
 Nowadays, the Microservice Architecture Pattern has been widely used. However, it has several drawbacks and it can be challenging to implement it.
@@ -84,35 +80,6 @@ Both [Product Service](docs/product-service.md) and [User Service](docs/user-ser
     "product_code": "veggie-box"
 }
 ```
-
-
-## Evaluation Criteria
-- Extensibility and readability of the code
-- How the files and folders are organized in the filesystem
-- Resilience of the service towards third party failures
-- Testing suite
-- Documentation of design process in the PR description
-
-
-## Bonus criteria
-- Use of asyncio library and asynchronous patterns
-- Metrics
-- Fault tolerance mechanisms regarding RabbitMQ broker downtime
-
-
-## Submission instructions
-
-We expect that the assignment will not take more than 3 - 4 hours of work. In our judgement we rely on common sense and do not expect production ready code. We are rather instrested in your problem solving skills and command of the programming language that you chose.
-
-The test needs to be submitted as a pull request to this repository so we can leave reviews and have discussion about the application.
-
-### Steps
-
-1. Clone this repository
-2. Checkout to a new `dev` branch
-3. Once done, create a PR in this repository but don't merge it
-
-**Lastly, but very important, have fun!**
 
 ### To run the application
 
